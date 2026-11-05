@@ -16,6 +16,6 @@ public class CrearPedidoRequestDTO {
     private TipoEntregaEnum tipoEntrega;
     private Integer numeroMesa;
     private String observaciones;
-    private List<ItemPerdidoRequestDTO> item;
+    private List<ItemPedidoRequestDTO> item;
 
 }
