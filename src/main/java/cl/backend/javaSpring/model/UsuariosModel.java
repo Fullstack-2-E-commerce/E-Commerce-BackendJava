@@ -1,5 +1,7 @@
 package cl.backend.javaSpring.model;
 
+import java.sql.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,5 +26,25 @@ public class UsuariosModel {
     @Column (name = "nombre", nullable = false)
     private String nombre;
 
-    
+    @Column (name = "apellidos", nullable = false)
+    private String apellidos;
+
+    @Column (name = "email", nullable = false)
+    private String email;
+
+    @Column (name = "fecha_nacimiento", nullable = true)
+    private Date fechaNacimiento;
+
+    @Column (name = "region", nullable = false)
+    private String region;
+
+    @Column (name = "comuna", nullable = false)
+    private String comuna;
+
+    @Column (name = "direccion", nullable = false)
+    private String direccion;
+
+    @Column (name = "rol", nullable = false)
+    private String rolUsuario;
+
 }
