@@ -38,7 +38,7 @@ public class DetallePedidoModel {
     private Double precioUnitario;
 
     @Column (name = "subtotal", nullable = false)
-    private Double subtototal;
+    private Double subtotal;
 
     @Column (name = "notas_especiales", nullable = true)
     private String notasEspeciales; // "Sin cebolla", "Sin mayo", etc...

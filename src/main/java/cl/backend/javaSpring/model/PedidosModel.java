@@ -42,7 +42,7 @@ public class PedidosModel {
     @Column (name = "tipo_entrega", nullable = false, length = 30)
     private TipoEntregaEnum tipoEntrega;
 
-    @Column (name = "numero_mesa", nullable = false)
+    @Column (name = "numero_mesa", nullable = true)
     private Integer numeroMesa;
 
     @Column (name = "total", nullable = false)
