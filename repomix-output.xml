@@ -53,7 +53,6 @@ bin/
         cl/
           backend/
             javaSpring/
-              dto/
               model/
                 ProductosModel.class
                 UsuariosModel.class
@@ -78,6 +77,8 @@ src/
         backend/
           javaSpring/
             dto/
+              CrearPedidoRequestDTO.java
+              ItemPerdidoRequestDTO.java
             model/
               DetallePedidoModel.java
               EstadoPedidoEnum.java
@@ -86,6 +87,11 @@ src/
               RolUsuarioEnum.java
               TipoEntregaEnum.java
               UsuariosModel.java
+            repository/
+              DetallePedidoRepository.java
+              PedidosRepository.java
+              ProductosRepository.java
+              UsuarioRepository.java
             JavaSpringApplication.java
     resources/
       application.properties
@@ -104,6 +110,102 @@ pom.xml
 
 <files>
 This section contains the contents of the repository's files.
+
+<file path="src/main/java/cl/backend/javaSpring/dto/CrearPedidoRequestDTO.java">
+package cl.backend.javaSpring.dto;
+
+import java.util.List;
+
+import cl.backend.javaSpring.model.TipoEntregaEnum;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data 
+@AllArgsConstructor
+@NoArgsConstructor
+public class CrearPedidoRequestDTO {
+
+    private Long usuarioId;
+    private TipoEntregaEnum tipoEntrega;
+    private Integer numeroMesa;
+    private String observaciones;
+    private List<ItemPerdidoRequestDTO> item;
+
+}
+</file>
+
+<file path="src/main/java/cl/backend/javaSpring/dto/ItemPerdidoRequestDTO.java">
+package cl.backend.javaSpring.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data 
+@AllArgsConstructor
+@NoArgsConstructor
+public class ItemPerdidoRequestDTO {
+
+    private Long productoId;
+    private Integer cantidad;
+    private String notasEspeciales;
+
+}
+</file>
+
+<file path="src/main/java/cl/backend/javaSpring/repository/DetallePedidoRepository.java">
+package cl.backend.javaSpring.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import cl.backend.javaSpring.model.DetallePedidoModel;
+
+public interface DetallePedidoRepository extends JpaRepository<DetallePedidoModel, Long> {
+
+    List<DetallePedidoModel> findByPedidoId(Long pedidoId);
+
+}
+</file>
+
+<file path="src/main/java/cl/backend/javaSpring/repository/PedidosRepository.java">
+package cl.backend.javaSpring.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import cl.backend.javaSpring.model.EstadoPedidoEnum;
+import cl.backend.javaSpring.model.PedidosModel;
+import cl.backend.javaSpring.model.UsuariosModel;
+
+public interface PedidosRepository extends JpaRepository <PedidosModel, Long> {
+
+    List<PedidosModel> findByEstado(EstadoPedidoEnum estado);
+    List<PedidosModel> findByUsuario(UsuariosModel usuario);
+
+}
+</file>
+
+<file path="src/main/java/cl/backend/javaSpring/repository/ProductosRepository.java">
+package cl.backend.javaSpring.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import cl.backend.javaSpring.model.ProductosModel;
+
+public interface ProductosRepository extends JpaRepository<ProductosModel, Long>{
+
+    List<ProductosModel> findByCategoria(String categoria);
+    List<ProductosModel> findByDestacadoTrue();
+    List<ProductosModel> findByStockLessThanEqual(Integer stockCritico);
+
+}
+</file>
 
 <file path=".mvn/wrapper/maven-wrapper.properties">
 wrapperVersion=3.3.4
@@ -768,55 +870,6 @@ Write-Output "MVN_CMD=$MAVEN_HOME/bin/$MVN_CMD"
 </project>
 </file>
 
-<file path="src/main/java/cl/backend/javaSpring/model/DetallePedidoModel.java">
-package cl.backend.javaSpring.model;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data 
-@AllArgsConstructor 
-@NoArgsConstructor 
-@Entity
-@Table (name = "detalle_pedidos")
-public class DetallePedidoModel {
-
-    @Id 
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne 
-    @JoinColumn (name = "pedido_id", nullable = false)
-    private PedidosModel pedido;
-
-    @ManyToOne
-    @JoinColumn (name = "producto_id", nullable = false)
-    private ProductosModel producto;
-
-    @Column (name = "cantidad", nullable = false)
-    private Integer cantidad;
-
-    @Column (name = "precio_unitario", nullable = false)
-    private Double precioUnitario;
-
-    @Column (name = "subtotal", nullable = false)
-    private Double subtototal;
-
-    @Column (name = "notas_especiales", nullable = true)
-    private String notasEspeciales; // "Sin cebolla", "Sin mayo", etc...
-
-}
-</file>
-
 <file path="src/main/java/cl/backend/javaSpring/model/EstadoPedidoEnum.java">
 package cl.backend.javaSpring.model;
 
@@ -828,63 +881,6 @@ public enum EstadoPedidoEnum {
     ENTREGADO,
     CANCELADO
     
-}
-</file>
-
-<file path="src/main/java/cl/backend/javaSpring/model/PedidosModel.java">
-package cl.backend.javaSpring.model;
-
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data 
-@AllArgsConstructor 
-@NoArgsConstructor 
-@Entity 
-@Table (name = "pedidos")
-public class PedidosModel {
-
-    @Id 
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn (name = "usuario_id", nullable = false)
-    private UsuariosModel usuario;
-
-    @Column (name = "fecha_pedido", nullable = false)
-    private LocalDateTime fechaPedido;
-
-    @Enumerated (EnumType.STRING)
-    @Column (name = "estado", nullable = false, length = 30)
-    private EstadoPedidoEnum estado;
-
-    @Enumerated (EnumType.STRING)
-    @Column (name = "tipo_entrega", nullable = false, length = 30)
-    private TipoEntregaEnum tipoEntrega;
-
-    @Column (name = "numero_mesa", nullable = false)
-    private Integer numeroMesa;
-
-    @Column (name = "total", nullable = false)
-    private Double total;
-
-    @Column (name = "observaciones", nullable = true)
-    private String observaciones;
-
 }
 </file>
 
@@ -908,6 +904,26 @@ public enum TipoEntregaEnum {
     EN_MESA,
     PARA_LLEVAR,
     DELIVERY
+
+}
+</file>
+
+<file path="src/main/java/cl/backend/javaSpring/repository/UsuarioRepository.java">
+package cl.backend.javaSpring.repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import cl.backend.javaSpring.model.RolUsuarioEnum;
+import cl.backend.javaSpring.model.UsuariosModel;
+import java.util.List;
+
+
+public interface UsuarioRepository extends JpaRepository<UsuariosModel, Long> {
+
+    Optional<UsuariosModel> findByEmail(String email);
+    List<UsuariosModel> findByRol(RolUsuarioEnum rol);
 
 }
 </file>
@@ -1437,6 +1453,112 @@ try {
 }
 
 Write-Output "MVN_CMD=$MAVEN_HOME/bin/$MVN_CMD"
+</file>
+
+<file path="src/main/java/cl/backend/javaSpring/model/DetallePedidoModel.java">
+package cl.backend.javaSpring.model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data 
+@AllArgsConstructor 
+@NoArgsConstructor 
+@Entity
+@Table (name = "detalle_pedidos")
+public class DetallePedidoModel {
+
+    @Id 
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne 
+    @JoinColumn (name = "pedido_id", nullable = false)
+    private PedidosModel pedido;
+
+    @ManyToOne
+    @JoinColumn (name = "producto_id", nullable = false)
+    private ProductosModel producto;
+
+    @Column (name = "cantidad", nullable = false)
+    private Integer cantidad;
+
+    @Column (name = "precio_unitario", nullable = false)
+    private Double precioUnitario;
+
+    @Column (name = "subtotal", nullable = false)
+    private Double subtotal;
+
+    @Column (name = "notas_especiales", nullable = true)
+    private String notasEspeciales; // "Sin cebolla", "Sin mayo", etc...
+
+}
+</file>
+
+<file path="src/main/java/cl/backend/javaSpring/model/PedidosModel.java">
+package cl.backend.javaSpring.model;
+
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data 
+@AllArgsConstructor 
+@NoArgsConstructor 
+@Entity 
+@Table (name = "pedidos")
+public class PedidosModel {
+
+    @Id 
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn (name = "usuario_id", nullable = false)
+    private UsuariosModel usuario;
+
+    @Column (name = "fecha_pedido", nullable = false)
+    private LocalDateTime fechaPedido;
+
+    @Enumerated (EnumType.STRING)
+    @Column (name = "estado", nullable = false, length = 30)
+    private EstadoPedidoEnum estado;
+
+    @Enumerated (EnumType.STRING)
+    @Column (name = "tipo_entrega", nullable = false, length = 30)
+    private TipoEntregaEnum tipoEntrega;
+
+    @Column (name = "numero_mesa", nullable = true)
+    private Integer numeroMesa;
+
+    @Column (name = "total", nullable = false)
+    private Double total;
+
+    @Column (name = "observaciones", nullable = true)
+    private String observaciones;
+
+}
 </file>
 
 <file path="src/main/java/cl/backend/javaSpring/model/ProductosModel.java">
