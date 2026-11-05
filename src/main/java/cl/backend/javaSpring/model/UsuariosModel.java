@@ -4,6 +4,8 @@ import java.sql.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "usuarios")
+@Table (name = "usuarios")
 public class UsuariosModel {
 
     @Id
@@ -44,7 +46,8 @@ public class UsuariosModel {
     @Column (name = "direccion", nullable = false)
     private String direccion;
 
-    @Column (name = "rol", nullable = false)
-    private String rolUsuario;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
+    private RolUsuarioEnum rol;
 
 }
