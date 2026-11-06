@@ -8,9 +8,10 @@ import cl.backend.javaSpring.pedido.model.EstadoPedidoEnum;
 import cl.backend.javaSpring.pedido.model.PedidosModel;
 import cl.backend.javaSpring.usuario.model.UsuariosModel;
 
-public interface PedidosRepository extends JpaRepository <PedidosModel, Long> {
+public interface PedidosRepository extends JpaRepository<PedidosModel, Long> {
 
     List<PedidosModel> findByEstado(EstadoPedidoEnum estado);
+
     List<PedidosModel> findByUsuario(UsuariosModel usuario);
 
 }

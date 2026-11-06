@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/pedidos")
-@RequiredArgsConstructor 
+@RequiredArgsConstructor
 public class PedidoController {
 
     private final PedidoService pedidoService;
@@ -44,7 +44,7 @@ public class PedidoController {
 
     @PatchMapping("/{id}/estado")
     public ResponseEntity<PedidoResponseDTO> cambiarEstado(
-            @PathVariable Long id, 
+            @PathVariable Long id,
             @RequestParam EstadoPedidoEnum nuevoEstado) {
         return ResponseEntity.ok(pedidoService.cambiarEstado(id, nuevoEstado));
     }

@@ -18,32 +18,32 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table (name = "usuarios")
+@Table(name = "usuarios")
 public class UsuariosModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column (name = "nombre", nullable = false)
+
+    @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @Column (name = "apellidos", nullable = false)
+    @Column(name = "apellidos", nullable = false)
     private String apellidos;
 
-    @Column (name = "email", nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column (name = "fecha_nacimiento", nullable = true)
+    @Column(name = "fecha_nacimiento", nullable = true)
     private Date fechaNacimiento;
 
-    @Column (name = "region", nullable = false)
+    @Column(name = "region", nullable = false)
     private String region;
 
-    @Column (name = "comuna", nullable = false)
+    @Column(name = "comuna", nullable = false)
     private String comuna;
 
-    @Column (name = "direccion", nullable = false)
+    @Column(name = "direccion", nullable = false)
     private String direccion;
 
     @Enumerated(EnumType.STRING)

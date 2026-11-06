@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor 
+@RequiredArgsConstructor
 public class PedidoService {
 
     private final PedidosRepository pedidosRepository;
@@ -33,7 +33,8 @@ public class PedidoService {
 
     @Transactional
     public PedidoResponseDTO crearPedido(CrearPedidoRequestDTO dto) {
-        UsuariosModel usuario = usuarioRepository.findById(dto.getUsuarioId()).orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + dto.getUsuarioId()));
+        UsuariosModel usuario = usuarioRepository.findById(dto.getUsuarioId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + dto.getUsuarioId()));
         PedidosModel pedido = pedidoMapper.toEntity(dto, usuario);
         pedido = pedidosRepository.save(pedido);
 
@@ -42,14 +43,15 @@ public class PedidoService {
 
         for (ItemPedidoRequestDTO itemDto : dto.getItems()) {
             ProductosModel producto = productosRepository.findById(itemDto.getProductoId())
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + itemDto.getProductoId()));
+                    .orElseThrow(
+                            () -> new RuntimeException("Producto no encontrado con ID: " + itemDto.getProductoId()));
             if (producto.getStock() < itemDto.getCantidad()) {
                 throw new RuntimeException("Stock insuficiente para: " + producto.getNombreProducto());
             }
 
             producto.setStock(producto.getStock() - itemDto.getCantidad());
             productosRepository.save(producto);
-            
+
             DetallePedidoModel detalle = pedidoMapper.toDetailEntity(itemDto, pedido, producto);
             totalPedido += detalle.getSubtotal();
             detalles.add(detalle);
@@ -62,7 +64,7 @@ public class PedidoService {
         return pedidoMapper.toResponseDTO(pedido, detallesGuardados);
     }
 
-    @Transactional (readOnly = true)
+    @Transactional(readOnly = true)
     public List<PedidoResponseDTO> obtenerTodos() {
         return pedidosRepository.findAll().stream()
                 .map(pedido -> {
@@ -71,8 +73,8 @@ public class PedidoService {
                 }).toList();
     }
 
-    @Transactional (readOnly = true)
-    public List<PedidoResponseDTO> obtenerPorEstado (EstadoPedidoEnum estado) {
+    @Transactional(readOnly = true)
+    public List<PedidoResponseDTO> obtenerPorEstado(EstadoPedidoEnum estado) {
         return pedidosRepository.findByEstado(estado).stream().map(pedido -> {
             List<DetallePedidoModel> detalles = detallePedidoRepository.findByPedidoId(pedido.getId());
             return pedidoMapper.toResponseDTO(pedido, detalles);
@@ -82,10 +84,10 @@ public class PedidoService {
     @Transactional
     public PedidoResponseDTO cambiarEstado(Long id, EstadoPedidoEnum nuevoEstado) {
         PedidosModel pedido = pedidosRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Pedido no encontrado con ID: " + id));
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado con ID: " + id));
         pedido.setEstado(nuevoEstado);
         pedidosRepository.save(pedido);
-        
+
         List<DetallePedidoModel> detalles = detallePedidoRepository.findByPedidoId(pedido.getId());
         return pedidoMapper.toResponseDTO(pedido, detalles);
     }

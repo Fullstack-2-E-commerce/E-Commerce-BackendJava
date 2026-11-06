@@ -15,11 +15,11 @@ import cl.backend.javaSpring.pedido.model.PedidosModel;
 import cl.backend.javaSpring.producto.model.ProductosModel;
 import cl.backend.javaSpring.usuario.model.UsuariosModel;
 
-@Component 
+@Component
 public class PedidoMapper {
 
     public PedidosModel toEntity(CrearPedidoRequestDTO dto, UsuariosModel usuario) {
-        
+
         PedidosModel pedido = new PedidosModel();
         pedido.setUsuario(usuario);
         pedido.setFechaPedido(LocalDateTime.now());
@@ -32,7 +32,7 @@ public class PedidoMapper {
 
     }
 
-    public DetallePedidoModel toDetailEntity(ItemPedidoRequestDTO dto, PedidosModel pedido, ProductosModel producto){
+    public DetallePedidoModel toDetailEntity(ItemPedidoRequestDTO dto, PedidosModel pedido, ProductosModel producto) {
         DetallePedidoModel detalle = new DetallePedidoModel();
         detalle.setPedido(pedido);
         detalle.setProducto(producto);
@@ -49,29 +49,27 @@ public class PedidoMapper {
                 .toList();
 
         return new PedidoResponseDTO(
-            pedido.getId(),
-            pedido.getUsuario().getId(),
-            pedido.getUsuario().getNombre() + " " + pedido.getUsuario().getApellidos(),
-            pedido.getFechaPedido(),
-            pedido.getEstado(),
-            pedido.getTipoEntrega(),
-            pedido.getNumeroMesa(),
-            pedido.getTotal(),
-            pedido.getObservaciones(),
-            itemDTOs
-        );
+                pedido.getId(),
+                pedido.getUsuario().getId(),
+                pedido.getUsuario().getNombre() + " " + pedido.getUsuario().getApellidos(),
+                pedido.getFechaPedido(),
+                pedido.getEstado(),
+                pedido.getTipoEntrega(),
+                pedido.getNumeroMesa(),
+                pedido.getTotal(),
+                pedido.getObservaciones(),
+                itemDTOs);
     }
 
     public DetallePedidoResponseDTO toDetailResponseDTO(DetallePedidoModel detalle) {
         return new DetallePedidoResponseDTO(
-            detalle.getId(),
-            detalle.getProducto().getId(),
-            detalle.getProducto().getNombreProducto(),
-            detalle.getCantidad(),
-            detalle.getPrecioUnitario(),
-            detalle.getSubtotal(),
-            detalle.getNotasEspeciales()
-        );
+                detalle.getId(),
+                detalle.getProducto().getId(),
+                detalle.getProducto().getNombreProducto(),
+                detalle.getCantidad(),
+                detalle.getPrecioUnitario(),
+                detalle.getSubtotal(),
+                detalle.getNotasEspeciales());
     }
 
 }

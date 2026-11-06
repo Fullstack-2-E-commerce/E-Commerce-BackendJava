@@ -18,39 +18,39 @@ import lombok.NoArgsConstructor;
 
 import cl.backend.javaSpring.usuario.model.UsuariosModel;
 
-@Data 
-@AllArgsConstructor 
-@NoArgsConstructor 
-@Entity 
-@Table (name = "pedidos")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "pedidos")
 public class PedidosModel {
 
-    @Id 
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn (name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
     private UsuariosModel usuario;
 
-    @Column (name = "fecha_pedido", nullable = false)
+    @Column(name = "fecha_pedido", nullable = false)
     private LocalDateTime fechaPedido;
 
-    @Enumerated (EnumType.STRING)
-    @Column (name = "estado", nullable = false, length = 30)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado", nullable = false, length = 30)
     private EstadoPedidoEnum estado;
 
-    @Enumerated (EnumType.STRING)
-    @Column (name = "tipo_entrega", nullable = false, length = 30)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_entrega", nullable = false, length = 30)
     private TipoEntregaEnum tipoEntrega;
 
-    @Column (name = "numero_mesa", nullable = true)
+    @Column(name = "numero_mesa", nullable = true)
     private Integer numeroMesa;
 
-    @Column (name = "total", nullable = false)
+    @Column(name = "total", nullable = false)
     private Double total;
 
-    @Column (name = "observaciones", nullable = true)
+    @Column(name = "observaciones", nullable = true)
     private String observaciones;
 
 }

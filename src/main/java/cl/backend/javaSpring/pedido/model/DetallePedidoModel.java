@@ -14,35 +14,35 @@ import lombok.NoArgsConstructor;
 
 import cl.backend.javaSpring.producto.model.ProductosModel;
 
-@Data 
-@AllArgsConstructor 
-@NoArgsConstructor 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table (name = "detalle_pedidos")
+@Table(name = "detalle_pedidos")
 public class DetallePedidoModel {
 
-    @Id 
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne 
-    @JoinColumn (name = "pedido_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "pedido_id", nullable = false)
     private PedidosModel pedido;
 
     @ManyToOne
-    @JoinColumn (name = "producto_id", nullable = false)
+    @JoinColumn(name = "producto_id", nullable = false)
     private ProductosModel producto;
 
-    @Column (name = "cantidad", nullable = false)
+    @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
 
-    @Column (name = "precio_unitario", nullable = false)
+    @Column(name = "precio_unitario", nullable = false)
     private Double precioUnitario;
 
-    @Column (name = "subtotal", nullable = false)
+    @Column(name = "subtotal", nullable = false)
     private Double subtotal;
 
-    @Column (name = "notas_especiales", nullable = true)
+    @Column(name = "notas_especiales", nullable = true)
     private String notasEspeciales; // "Sin cebolla", "Sin mayo", etc...
 
 }
