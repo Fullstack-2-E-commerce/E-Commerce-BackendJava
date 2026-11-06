@@ -1,10 +1,10 @@
-package cl.backend.javaSpring.repository;
+package cl.backend.javaSpring.producto.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import cl.backend.javaSpring.model.ProductosModel;
+import cl.backend.javaSpring.producto.model.ProductosModel;
 
 public interface ProductosRepository extends JpaRepository<ProductosModel, Long>{
 

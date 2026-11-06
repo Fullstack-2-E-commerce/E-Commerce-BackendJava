@@ -1,4 +1,4 @@
-package cl.backend.javaSpring.model;
+package cl.backend.javaSpring.usuario.model;
 
 public enum RolUsuarioEnum {
 

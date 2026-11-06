@@ -1,4 +1,4 @@
-package cl.backend.javaSpring.dto;
+package cl.backend.javaSpring.pedido.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

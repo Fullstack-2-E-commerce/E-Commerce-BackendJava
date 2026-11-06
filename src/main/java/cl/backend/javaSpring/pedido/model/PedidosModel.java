@@ -1,4 +1,4 @@
-package cl.backend.javaSpring.model;
+package cl.backend.javaSpring.pedido.model;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +15,8 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import cl.backend.javaSpring.usuario.model.UsuariosModel;
 
 @Data 
 @AllArgsConstructor 

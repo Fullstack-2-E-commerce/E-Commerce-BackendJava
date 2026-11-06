@@ -1,8 +1,8 @@
-package cl.backend.javaSpring.dto;
+package cl.backend.javaSpring.pedido.dto;
 
 import java.util.List;
 
-import cl.backend.javaSpring.model.TipoEntregaEnum;
+import cl.backend.javaSpring.pedido.model.TipoEntregaEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
