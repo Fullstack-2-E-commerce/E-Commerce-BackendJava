@@ -1,11 +1,14 @@
 package cl.backend.javaSpring.pedido.mapper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import cl.backend.javaSpring.pedido.dto.CrearPedidoRequestDTO;
+import cl.backend.javaSpring.pedido.dto.DetallePedidoResponseDTO;
 import cl.backend.javaSpring.pedido.dto.ItemPedidoRequestDTO;
+import cl.backend.javaSpring.pedido.dto.PedidoResponseDTO;
 import cl.backend.javaSpring.pedido.model.DetallePedidoModel;
 import cl.backend.javaSpring.pedido.model.EstadoPedidoEnum;
 import cl.backend.javaSpring.pedido.model.PedidosModel;
@@ -38,6 +41,37 @@ public class PedidoMapper {
         detalle.setSubtotal(producto.getPrecio() * dto.getCantidad());
         detalle.setNotasEspeciales(dto.getNotasEspeciales());
         return detalle;
+    }
+
+    public PedidoResponseDTO toResponseDTO(PedidosModel pedido, List<DetallePedidoModel> detalles) {
+        List<DetallePedidoResponseDTO> itemDTOs = detalles.stream()
+                .map(this::toDetailResponseDTO)
+                .toList();
+
+        return new PedidoResponseDTO(
+            pedido.getId(),
+            pedido.getUsuario().getId(),
+            pedido.getUsuario().getNombre() + " " + pedido.getUsuario().getApellidos(),
+            pedido.getFechaPedido(),
+            pedido.getEstado(),
+            pedido.getTipoEntrega(),
+            pedido.getNumeroMesa(),
+            pedido.getTotal(),
+            pedido.getObservaciones(),
+            itemDTOs
+        );
+    }
+
+    public DetallePedidoResponseDTO toDetailResponseDTO(DetallePedidoModel detalle) {
+        return new DetallePedidoResponseDTO(
+            detalle.getId(),
+            detalle.getProducto().getId(),
+            detalle.getProducto().getNombreProducto(),
+            detalle.getCantidad(),
+            detalle.getPrecioUnitario(),
+            detalle.getSubtotal(),
+            detalle.getNotasEspeciales()
+        );
     }
 
 }
